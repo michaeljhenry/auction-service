@@ -1,0 +1,16 @@
+AuctionsTableIAM:
+  Effect: "Allow"
+  Action:
+    - "dynamodb:PutItem"
+    - "dynamodb:Scan"
+    - "dynamodb:GetItem"
+    - "dynamodb:UpdateItem"
+    - "dynamodb:Query"
+  Resource:
+    - ${self:custom.AuctionsTable.arn}
+    - !Join [
+        "/",
+        ["${self:custom.AuctionsTable.arn}", "index", "statusAndEndDate"],
+      ]
+# ${self:custom.AuctionsTable.arn}/index/statusAndEndDate is what join does.
+# when using Global Secondary Index we have a virtual table. we need to add that virtual table to our resources i guess
