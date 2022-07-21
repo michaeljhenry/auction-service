@@ -1,6 +1,8 @@
 import AWS from 'aws-sdk';
 import createError from 'http-errors'; 
 import commonMiddleware from '../lib/commonMiddleware';
+import validator from '@middy/validator';
+import getAuctionsSchema from '../lib/schemas/getAuctionsSchema';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient(); // this is static so its okay to define it here
 // query based on status
@@ -33,6 +35,14 @@ async function getAuctions(event, context) {
     };
 }
 
-export const handler = commonMiddleware(getAuctions);
+export const handler = commonMiddleware(getAuctions).use(
+    validator({
+      inputSchema: getAuctionsSchema,
+      ajvOptions: {
+        useDefaults: true,
+        strict: false,
+      },
+    })
+  );
 
 

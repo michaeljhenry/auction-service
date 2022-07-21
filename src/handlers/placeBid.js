@@ -3,6 +3,8 @@ import commonMiddleware from "../lib/commonMiddleware";
 import createError from 'http-errors'; 
 import { getAuctionById
  } from './getAuction';
+import placeBidSchema from '../lib/schema/placeBidSchema';
+import validator from '@middy/validator'
 const dynamodb = new AWS.DynamoDB.DocumentClient(); // this is static so its okay to define it here
 
 async function placeBid(event, context) {
@@ -42,4 +44,11 @@ if(amount <= auction.highestBid.amount) {
     };
 }
 
-export const handler = commonMiddleware(placeBid);
+export const handler = commonMiddleware(placeBid).use(
+    validator({
+      inputSchema: placeBidSchema,
+      ajvOptions: {
+        strict: false,
+      },
+    })
+  );
