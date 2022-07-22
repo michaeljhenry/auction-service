@@ -9,6 +9,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient(); // this is static so its oka
 
 async function createAuction(event, context) {
   const { title } = event.body // parsed by httpJsonBodyParser // JSON.parse(event.body);
+  const { email } = event.requestContext.authorizer;
   const now = new Date();
   const endDate = new Date();
   endDate.setHours(now.getHours() + 1);
@@ -20,7 +21,8 @@ async function createAuction(event, context) {
     endingAt: endDate.toISOString(),
     highestBid: {
       amount: 0
-    }
+    },
+    seller: email
   };
   try {
     await dynamodb.put({

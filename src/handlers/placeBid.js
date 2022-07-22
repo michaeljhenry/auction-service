@@ -3,7 +3,7 @@ import commonMiddleware from "../lib/commonMiddleware";
 import createError from 'http-errors'; 
 import { getAuctionById
  } from './getAuction';
-import placeBidSchema from '../lib/schema/placeBidSchema';
+import placeBidSchema from '../lib/schemas/placeBidSchema';
 import validator from '@middy/validator'
 const dynamodb = new AWS.DynamoDB.DocumentClient(); // this is static so its okay to define it here
 
