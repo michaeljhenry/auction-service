@@ -20,7 +20,6 @@ export const closeAuction = async (auction) => {
 
     const { title, seller, highestBid } = auction;
     const { amount, bidder } = highestBid;
-    console.log(bidder, seller);
     const notifySeller = sqs.sendMessage({
         QueueUrl: process.env.MAIL_QUEUE_URL,
         MessageBody: JSON.stringify({
