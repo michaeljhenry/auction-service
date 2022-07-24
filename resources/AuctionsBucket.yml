@@ -2,6 +2,11 @@ AuctionsBucket:
   Type: AWS::S3::Bucket
   Properties:
     BucketName: ${self:custom.AuctionsBucket.name}
+    LifecycleConfiguration:
+      Rules:
+        - Id: ExpirePictures
+          Status: Enabled
+          ExpirationInDays: 1
 
 AuctionsBucketPolicy:
   Type: AWS::S3::BucketPolicy
@@ -14,4 +19,4 @@ AuctionsBucketPolicy:
           Principal: "*"
           Action:
             - s3:GetObject
-          Resource: arn:aws:s3:::${self:custom.AuctionsBucket.name}/* # * is for any subfolders we have in our bucket
+          Resource: arn:aws:s3:::${self:custom.AuctionsBucket.name}/*
